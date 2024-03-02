@@ -33,18 +33,18 @@ jobs:
           cmake -DCMAKE_INSTALL_PREFIX=$HOME/grpc -DgRPC_SSL_PROVIDER=package -DgRPC_ZLIB_PROVIDER=package -DgRPC_PROTOBUF_PACKAGE_TYPE=CONFIG -DgRPC_ZLIB_PROVIDER=package ..
           make
           make install
-      - name: "CMake Build"
+      - name: "Build Libraries"
         working-directory: ./cpp
         run: |
           mkdir _build && cd _build
           cmake .. 
           make
-          make install
       - name: "Package"
         working-directory: ./cpp
         run: |
           mkdir -p dist/lib
-          cp -r include dist/
+          mkdir -p dist/include
+          cp -r include/rocketmq dist/include/
           cp build/librocketmq.so dist/lib/
           cp build/librocketmq.a  dist/lib/
           tar -czvf dist.tar.gz dist
