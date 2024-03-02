@@ -16,7 +16,10 @@ jobs:
       - uses: actions/checkout@v4
         with:
           repository: grpc/grpc
-          ref: 'grpc-1.46.3'
+          # The branch, tag or SHA to checkout. When checking out the repository that
+          # triggered a workflow, this defaults to the reference or SHA for that event.
+          # Otherwise, uses the default branch.
+          ref: 'v1.46.3'
           # Relative path under $GITHUB_WORKSPACE to place the repository
           path: repo/grpc
           submodules: true
