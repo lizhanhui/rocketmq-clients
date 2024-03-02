@@ -4,7 +4,7 @@ name: "cpp-tagged-release"
 on:
   push:
     tags:
-      - "v*"
+      - "cpp-*"
 
 jobs:
   tagged-release:
