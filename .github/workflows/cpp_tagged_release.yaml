@@ -45,8 +45,8 @@ jobs:
           mkdir -p dist/lib
           mkdir -p dist/include
           cp -r include/rocketmq dist/include/
-          cp build/librocketmq.so dist/lib/
-          cp build/librocketmq.a  dist/lib/
+          cp _build/librocketmq.so dist/lib/
+          cp _build/librocketmq.a  dist/lib/
           tar -czvf dist.tar.gz dist
       - uses: "marvinpinto/action-automatic-releases@latest"
         with:
