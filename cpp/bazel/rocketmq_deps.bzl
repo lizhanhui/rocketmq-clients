@@ -188,3 +188,12 @@ def rocketmq_deps():
             "https://github.com/bazelbuild/rules_proto/archive/refs/tags/4.0.0-3.20.0.tar.gz",
         ],
     )
+
+    maybe(
+        http_archive,
+        name = "com_github_opentelemetry",
+        strip_prefix = "opentelemetry-cpp-1.14.2",
+        urls = [
+            "https://github.com/open-telemetry/opentelemetry-cpp/archive/refs/tags/v1.14.2.tar.gz"
+        ]
+    )
