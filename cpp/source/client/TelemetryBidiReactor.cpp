@@ -22,13 +22,13 @@
 #include <utility>
 
 #include "ClientManager.h"
-#include "rocketmq/Logger.h"
-#include "spdlog/spdlog.h"
 #include "MessageExt.h"
 #include "Metadata.h"
 #include "RpcClient.h"
 #include "Signature.h"
 #include "google/protobuf/util/time_util.h"
+#include "rocketmq/Logger.h"
+#include "spdlog/spdlog.h"
 
 ROCKETMQ_NAMESPACE_BEGIN
 
@@ -247,10 +247,33 @@ void TelemetryBidiReactor::applyBackoffPolicy(const rmq::Settings& settings, std
 }
 
 void TelemetryBidiReactor::applyPublishingConfig(const rmq::Settings& settings, std::shared_ptr<Client> client) {
+  // The server may have implicitly assumed a namespace for the client.
+  if (!settings.publishing().topics().empty()) {
+    for (const auto& topic : settings.publishing().topics()) {
+      if (topic.resource_namespace() != client->config().resource_namespace) {
+        SPDLOG_INFO("Client namespace is changed from [{}] to [{}]", client->config().resource_namespace,
+                    topic.resource_namespace());
+        client->config().resource_namespace = topic.resource_namespace();
+        break;
+      }
+    }
+  }
   client->config().publisher.max_body_size = settings.publishing().max_body_size();
 }
 
 void TelemetryBidiReactor::applySubscriptionConfig(const rmq::Settings& settings, std::shared_ptr<Client> client) {
+  // The server may have implicitly assumed a namespace for the client.
+  if (!settings.subscription().subscriptions().empty()) {
+    for (const auto& subscription : settings.subscription().subscriptions()) {
+      if (subscription.topic().resource_namespace() != client->config().resource_namespace) {
+        SPDLOG_INFO("Client namespace is changed from [{}] to [{}]", client->config().resource_namespace,
+                    subscription.topic().resource_namespace());
+        client->config().resource_namespace = subscription.topic().resource_namespace();
+        break;
+      }
+    }
+  }
+
   client->config().subscriber.fifo = settings.subscription().fifo();
   auto polling_timeout =
       google::protobuf::util::TimeUtil::DurationToMilliseconds(settings.subscription().long_polling_timeout());
