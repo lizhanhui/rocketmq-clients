@@ -296,6 +296,15 @@ void TelemetryBidiReactor::write(TelemetryCommand command) {
 
 void TelemetryBidiReactor::fireWrite() {
   SPDLOG_DEBUG("{}#fireWrite", peer_address_);
+
+  {
+    absl::MutexLock lk(&stream_state_mtx_);
+    if (stream_state_ != StreamState::Active || stream_state_ != StreamState::Created) {
+      SPDLOG_INFO("TelemetryBidiReactor to {} is closed or half-closed, ignoring fireWrite event", peer_address_);
+      return;
+    }
+  }
+
   {
     absl::MutexLock lk(&writes_mtx_);
     if (writes_.empty()) {
