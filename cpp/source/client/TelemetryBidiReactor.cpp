@@ -301,7 +301,7 @@ void TelemetryBidiReactor::fireWrite() {
     absl::MutexLock lk(&stream_state_mtx_);
     if (stream_state_ != StreamState::Active && stream_state_ != StreamState::Created) {
       SPDLOG_WARN("TelemetryBidiReactor to {} is closed or half-closed, ignoring fireWrite event. stream-state={}",
-                  peer_address_, stream_state_);
+                  peer_address_, static_cast<std::uint8_t>(stream_state_));
       return;
     }
   }
