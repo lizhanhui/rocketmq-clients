@@ -1,0 +1,21 @@
+# load("@rules_cc//cc:defs.bzl", "cc_shared_library")
+
+filegroup(
+    name = "exports_lds",
+    srcs = [
+        "export.map",
+    ],
+)
+
+cc_shared_library(
+    name = "rocketmq",
+    deps = [
+        "//source/rocketmq:rocketmq_library",
+    ],
+    additional_linker_inputs = [
+        ":exports_lds",
+    ],
+    user_link_flags = [
+        "-Wl,--version-script=$(location :exports_lds)",
+    ],
+)

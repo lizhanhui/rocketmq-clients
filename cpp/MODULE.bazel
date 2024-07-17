@@ -1,0 +1,25 @@
+###############################################################################
+# Bazel now uses Bzlmod by default to manage external dependencies.
+# Please consider migrating your external dependencies from WORKSPACE to MODULE.bazel.
+#
+# For more details, please check https://github.com/bazelbuild/bazel/issues/18958
+###############################################################################
+module(name = "rocketmq", version = "5.0.1", repo_name = "org_apache_rocketmq")
+
+bazel_dep(name = "rules_cc", version = "0.0.9", repo_name="rules_cc")
+bazel_dep(name = "grpc", version = "1.65.0", repo_name = "com_github_grpc_grpc")
+bazel_dep(name = "abseil-cpp", version = "20240116.2", repo_name="com_google_absl")
+# bazel_dep(name = "rules_proto_grpc", version = "5.0.0-alpha2", repo_name="rules_proto_grpc")
+# bazel_dep(name = "rules_proto", version = "6.0.2", repo_name="rules_proto")
+bazel_dep(name = "gflags", version = "2.2.2")
+bazel_dep(name = "asio", version = "1.28.2")
+bazel_dep(name = "opentelemetry-cpp", version = "1.16.0")
+bazel_dep(name = "opencensus-proto", version = "0.4.1", repo_name="opencensus_proto")
+bazel_dep(name = "spdlog", version = "1.14.1", repo_name="com_github_gabime_spdlog")
+bazel_dep(name = "fmt", version = "11.0.1", repo_name="com_github_fmtlib_fmt")
+bazel_dep(name = "googletest", version = "1.14.0.bcr.1", repo_name="com_google_googletest")
+
+# grpc_deps = use_module_rule("@com_github_grpc_grpc//bazel:grpc_deps.bzl", "grpc_deps")
+# grpc_deps()
+# grpc_extra_deps = use_module_rule("@com_github_grpc_grpc//bazel:grpc_extra_deps.bzl", "grpc_extra_deps")
+# grpc_extra_deps()
